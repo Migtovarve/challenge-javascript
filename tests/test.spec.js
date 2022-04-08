@@ -21,19 +21,19 @@ describe('Practica del Checkpoint M1', function(){
         let sqrt = exponencial(2);
         let e4 = exponencial(4);
         let e3 = exponencial(3);
-        xit('La funcion hija debe de elevar al cuadrado, si 2 le es pasado como parametro a la funcion padre', function() {
+        it('La funcion hija debe de elevar al cuadrado, si 2 le es pasado como parametro a la funcion padre', function() {
             expect(typeof sqrt).to.be.equal('function');
             expect(sqrt(2)).to.be.equal(4);
             expect(sqrt(3)).to.be.equal(9);
             expect(sqrt(4)).to.be.equal(16);
         });
-        xit('La funcion hija debe de elevar al cubo, si 3 le es pasado como parametro a la funcion padre', function() {
+        it('La funcion hija debe de elevar al cubo, si 3 le es pasado como parametro a la funcion padre', function() {
             expect(typeof e3).to.be.equal('function');
             expect(e3(2)).to.be.equal(8);
             expect(e3(3)).to.be.equal(27);
             expect(e3(4)).to.be.equal(64);
         });
-        xit('La funcion hija debe de elevar a 4, si 4 le es pasado como parametro a la funcion padre', function() {
+         it('La funcion hija debe de elevar a 4, si 4 le es pasado como parametro a la funcion padre', function() {
             expect(typeof e4).to.be.equal('function');
             expect(e4(2)).to.be.equal(16);
             expect(e4(3)).to.be.equal(81);
@@ -77,13 +77,13 @@ describe('Practica del Checkpoint M1', function(){
                 }, E: 'pared', O: 'pared'
             }, O: 'pared'
         }
-        xit("Si no se le pasa un laberinto debe retornar ''", function() {
+        it("Si no se le pasa un laberinto debe retornar ''", function() {
             expect(direcciones()).to.be.equal('');
         });
-        xit("Si se le pasa un laberinto sin destino debe retornar ''", function() {
+        it("Si se le pasa un laberinto sin destino debe retornar ''", function() {
             expect(direcciones({N:'pared', S:'pared', E:'pared', O:'pared'})).to.be.equal('');
         });
-        xit("Debe encontrar el destino dentro del laberinto y retornar los movimientos", function() {
+        it("Debe encontrar el destino dentro del laberinto y retornar los movimientos", function() {
             expect(direcciones(lab1)).to.be.equal('SOS');
             expect(direcciones(lab2)).to.be.equal('ESONOSE');
             expect(direcciones(lab3)).to.be.equal('ESOSEE');
@@ -91,25 +91,25 @@ describe('Practica del Checkpoint M1', function(){
     })
 
     describe('EJERCICIO 3: deepEqualArrays', function(){
-        xit('Debe hacer comparaciones superficiales', function(){
+        it('Debe hacer comparaciones superficiales', function(){
             expect(deepEqualArrays(
                 [0,1,2],
                 [0,1,2]
             )).to.be.true;
         })
-        xit('Debe comparar el tipo de cada elemento tambien', function(){
+        it('Debe comparar el tipo de cada elemento tambien', function(){
             expect(deepEqualArrays(
                 [0,1,2],
                 ['0','1','2']
             )).to.be.false;
         })
-        xit('Debe comparar todos los elementos de ambos arrays', function(){
+        it('Debe comparar todos los elementos de ambos arrays', function(){
             expect(deepEqualArrays(
                 [0,1,2],
                 [0,1,2,4]
             )).to.be.false;
         })
-        xit("Debe de hacer comparacion en 'profundidad'", function(){
+        it("Debe de hacer comparacion en 'profundidad'", function(){
             expect(deepEqualArrays(
                 [0,1,[[0,1,2],1,2]],
                 [0,1,[[0,1,2],1,2]]
@@ -119,20 +119,20 @@ describe('Practica del Checkpoint M1', function(){
 
     describe("EJERCICIO 4: OrderedLinkedList metodo add", function(){
         let ll = new OrderedLinkedList()
-        xit("debe agregar nodos a la OrderedLinkedList", function(){
+        it("debe agregar nodos a la OrderedLinkedList", function(){
             ll.add(5)
             let ll2 = new OrderedLinkedList()
             ll2.head = new Node(5)
             expect(ll).to.be.deep.equal(ll2)
         })
-        xit("debe agregar nodos a la OrderedLinkedList, despues de los nodos mayores al argumento", function(){
+        it("debe agregar nodos a la OrderedLinkedList, despues de los nodos mayores al argumento", function(){
             ll.add(1)
             let ll2 = new OrderedLinkedList()
             ll2.head = new Node(5)
             ll2.head.next = new Node(1)
             expect(ll).to.be.deep.equal(ll2)
         })
-        xit("debe agregar nodos a la OrderedLinkedList, antes de los nodos menores al argumento", function(){
+        it("debe agregar nodos a la OrderedLinkedList, antes de los nodos menores al argumento", function(){
             ll.add(4)
             let ll2 = new OrderedLinkedList()
             ll2.head = new Node(5)
@@ -143,7 +143,7 @@ describe('Practica del Checkpoint M1', function(){
     })
 
     describe("EJERCICIO 5: OrderedLinkedList metodo removeHigher", function(){
-        xit("debe retirar los nodos mas grandes de la OrderedLinkedList", function(){
+        it("debe retirar los nodos mas grandes de la OrderedLinkedList", function(){
             let ll = new OrderedLinkedList()
             ll.head = new Node(5)
             ll.head.next = new Node(4)
@@ -153,7 +153,7 @@ describe('Practica del Checkpoint M1', function(){
             expect(ll.removeHigher()).to.be.equal(1)
             expect(ll.head).to.be.equal(null)
         })
-        xit("si la OrderedLinkedList esta vacia debe retornar null", function(){
+        it("si la OrderedLinkedList esta vacia debe retornar null", function(){
             let ll = new OrderedLinkedList()
             expect(ll.removeHigher()).to.be.equal(null)
             expect(ll.removeHigher()).to.be.equal(null)
@@ -162,7 +162,7 @@ describe('Practica del Checkpoint M1', function(){
     })
 
     describe("EJERCICIO 6: OrderedLinkedList metodo removeLower", function(){
-        xit("debe retirar los nodos mas chicos de la OrderedLinkedList", function(){
+        it("debe retirar los nodos mas chicos de la OrderedLinkedList", function(){
             let ll = new OrderedLinkedList()
             ll.head = new Node(5)
             ll.head.next = new Node(4)
@@ -172,7 +172,7 @@ describe('Practica del Checkpoint M1', function(){
             expect(ll.removeLower()).to.be.equal(5)
             expect(ll.head).to.be.equal(null)
         })
-        xit("si la OrderedLinkedList esta vacia debe retornar null", function(){
+        it("si la OrderedLinkedList esta vacia debe retornar null", function(){
             let ll = new OrderedLinkedList()
             expect(ll.removeLower()).to.be.equal(null)
             expect(ll.removeLower()).to.be.equal(null)
@@ -209,14 +209,14 @@ describe('Practica del Checkpoint M1', function(){
         const BST = new BinarySearchTree(32)
         const arr = [8, 64, 5, 9];
         arr.forEach(e => BST.insert(e))
-        xit("Debe devolver un Array", function(){
+        it("Debe devolver un Array", function(){
             expect(BST.toArray() instanceof Array).to.be.true;
         })
-        xit("Debe devolver todos los elementos del arbol", function(){
+        it("Debe devolver todos los elementos del arbol", function(){
             expect(BST.toArray() instanceof Array).to.be.true;
             expect(BST.toArray().length).to.be.equal(5);
         })
-        xit("Debe devolver todos los elementos del arbol, en un array ordenado", function(){
+        it("Debe devolver todos los elementos del arbol, en un array ordenado", function(){
             expect(BST.toArray()).to.be.deep.equal([ 5, 8, 9, 32, 64 ]);
         })
     })

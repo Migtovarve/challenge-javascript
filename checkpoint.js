@@ -32,8 +32,11 @@ const {
 // > sqrt(4);
 // < 16
 
-function exponencial(exp) {
 
+function exponencial(exp) {
+    return function(parametro) {
+        return parametro**exp
+    }
 }
 
 // ----- Recursión -----
@@ -68,11 +71,21 @@ function exponencial(exp) {
 // El retorno de la funcion 'direcciones' debe ser 'SEN', ya que el destino se encuentra
 // haciendo los movimientos SUR->ESTE->NORTE
 // Aclaraciones: el segundo parametro que recibe la funcion ('direccion') puede ser pasado vacio (null)
-
-function direcciones(laberinto) {
-
+// hay tres posibilidades  
+/* que value = "pared"/"destino"/ objeto"*/
+function direcciones(laberinto = "") {
+    if (laberinto === "") return laberinto
+    var direction = "";
+    for (const key in laberinto) {
+        if (typeof(laberinto[key]) === "object" ) {
+            direction = direction + key
+            return direction + direcciones(laberinto[key])
+        } else if (laberinto[key] === "destino") {
+            return direction + key
+        }
+    }
+    return ""
 }
-
 
 // EJERCICIO 3
 // Crea la funcion 'deepEqualArrays':
@@ -87,8 +100,23 @@ function direcciones(laberinto) {
 // deepEqualArrays([0,1,2], [0,1,2,3]) => false
 // deepEqualArrays([0,1,[[0,1,2],1,2]], [0,1,[[0,1,2],1,2]]) => true
 
-function deepEqualArrays(arr1, arr2) {
+function deepEqualArrays(arr1, arr2, indice = 0) {
+    if (arr1.length !== arr2.length) return false;
+    if (typeof arr1[indice] !== typeof arr2[indice]) return false
+    //comparaciones superficiales
+    if (indice !== arr1.length) {
+        if (Array.isArray(arr1[indice]) === Array.isArray(arr2[indice])) {
+           /* return deepEqualArrays([arr1[indice],arr2[indice]])*/
+        }else {
+            if (arr1[indice] !== arr2[indice]) {
+                return false 
+            }    
+        }
+        return deepEqualArrays(arr1,arr2, indice+1)
+    } else {
 
+        return true
+    }
 }
 
 
@@ -98,7 +126,7 @@ function deepEqualArrays(arr1, arr2) {
 // Deben completar la siguiente implementacion 'OrderedLinkedList'(OLL)
 // que es muy similar a las LinkedList vistas en clase solo que 
 // los metodos son distintos y deben de estar pensados para conservar la lista
-// ordenada de mayor a menor.
+// ordenada de menor a menor.
 // ejemplos:
 // head --> 5 --> 3 --> 2 --> null
 // head --> 4 --> 3 --> 1 --> null
@@ -139,8 +167,33 @@ OrderedLinkedList.prototype.print = function(){
 // < 'head --> 5 --> 3 --> 1 --> null'
 //               4
 OrderedLinkedList.prototype.add = function(val){
-    
-}
+    var current = this.head
+    var node = new Node(val)
+    if (current === null) {
+        this.head = node 
+        return OrderedLinkedList.prototype.print()
+    } // si no hay nodos en la lista
+    else {      
+        if (current.value < val) {// Cuando el valor del nuevo nodo es menor que el primer nodo
+            node.next = current
+            current = node
+            return OrderedLinkedList.prototype.print()
+        } else {
+            if (current.next != null) {
+                while(current.next.value > val) {
+                    current = current.next;
+                }
+                node.next = current.next
+                current.next = node
+                return OrderedLinkedList.prototype.print()
+            } else {
+                current.next = node
+                return OrderedLinkedList.prototype.print()
+            }
+        }    
+    }
+}    
+
 
 
 // EJERCICIO 5
@@ -158,7 +211,43 @@ OrderedLinkedList.prototype.add = function(val){
 // > LL.removeHigher()
 // < null
 
+
 OrderedLinkedList.prototype.removeHigher = function(){
+    var current = this.head
+    if (this.head === null) return null
+    if (this.head.next === null){
+       this.head = null 
+       return current.value
+    } 
+    
+    var mayor = this.head
+    while (current.next !== null) {
+        if (mayor.value > current.next.value) {
+        } else {
+            mayor = current.next
+        }
+        current = current.next;
+    }
+    var valor = mayor.value
+    current = this.head
+    
+    if (current.value == mayor.value) {
+        this.head = mayor.next
+    } else if (current.next.value == mayor.value){
+        this.head.next = mayor.next
+    }else {
+        while (current.next.next !== null) {
+            if (current.next.next.value == mayor.value) {
+                current.next = mayor.next
+                break;
+            } else {
+                current = current.next  
+            }
+        }
+    } 
+    return valor
+    
+    
     
 }
 
@@ -179,7 +268,41 @@ OrderedLinkedList.prototype.removeHigher = function(){
 // < null
 
 OrderedLinkedList.prototype.removeLower = function(){
+    var current = this.head
+    if (this.head === null) return null
+    if (this.head.next === null){
+       this.head = null 
+       return current.value
+    } 
+
+    var menor = this.head
+    while (current.next !== null) {
+       if (menor.value < current.next.value){
+       } else {
+           menor = current.next
+       }
+       current = current.next
+    }
+    console.log(menor.value)
+    current = this.head
+    if (current.value == menor.value) {
+        this.head = menor.next
+    } else if (current.next.value == menor.value) {
+        this.head.next = menor.next
+    } else {
+        while (current.next.next !== null) {
+            if (current.next.next.value == menor.value) {
+                current.next.next = menor.next
+                console.log(this)
+                break;
+            } else {
+                current = current.next  
+            }
+        }
+    } 
     
+
+    return menor.value
 }
 
 
@@ -230,8 +353,15 @@ function multiCallbacks(cbs1, cbs2){
 // 5   9
 // resultado:[5,8,9,32,64]
 
-BinarySearchTree.prototype.toArray = function() {
-    
+BinarySearchTree.prototype.toArray = function(a = []) {
+    if (this.left!==null) {
+        this.left.toArray(a)
+    }
+    a.push(this.value)
+    if(this.right!==null) {
+        this.right.toArray(a)
+    }
+    return a
 }
 
 
@@ -256,14 +386,14 @@ function primalityTest(n) {
 
 // EJERCICIO 10
 // Implementa el algoritmo conocido como 'quickSort', que dado un arreglo de elemntos
-// retorn el mismo ordenado de 'mayor a menor!'
+// retorn el mismo ordenado de 'menor a menor!'
 // https://en.wikipedia.org/wiki/Quicksort
 
-function quickSort(array) {
+function quickSort(a) {
     
 }
 // QuickSort ya lo conocen solo que este 
-// ordena de mayor a menor
+// ordena de menor a menor
 // para esto hay que unir como right+mid+left o cambiar el 
 // signo menor en la comparacion con el pivot
 
@@ -275,7 +405,7 @@ function quickSort(array) {
 // EJERCICIO 11
 // Implementa la función 'reverse', que recibe un numero entero como parametro
 // e invierte el mismo.
-// Pero Debería hacer esto sin convertir el número introducido en una cadena, o un array
+// Pero Debería hacer esto sin convertir el número introducido en una cadena, o un a
 // Ejemplo:
 // > reverse(123);
 // < 321
